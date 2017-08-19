@@ -1,6 +1,7 @@
 var game = {
 	correct: 0,
 	incorrect: 0,
+	unanswered: 0,
 	questions: [
 		{
 			question: "What is not a house at Hogwarts?", 
@@ -36,6 +37,7 @@ var game = {
 	intervalId: 0,
 	counter: 31,
 	questionCounter: 7
+	
 };
 
 
@@ -49,6 +51,10 @@ function resetGame() {
 	// generateHTML();
 	// timerWrapper();
 	intervalId = 0;
+
+	$('.questions-wrap').empty();
+	$('.end-wrap').hide();
+
 	run();
 
 }
@@ -104,28 +110,42 @@ function checkAnswers() {
 	$('.questions-wrap .question').each(function(index, question) {
 		// var question = $(this);
 		// var question_index = quest;
+		// var selected = $('.selected')
 		var check = game.questions[index];
 		var answer = $(question).find('.selected').index();
 			
+
+
 		if ( check.answer === answer ) {
-			game.correct ++
+			game.correct ++;
 			
-			
-			
+				
 
-		} else {
+		} else if((check.answer !== answer) && (answer !== -1)){
 
-			game.incorrect ++
-		}
+			game.incorrect ++;
+		
+		
 			
+			// if(answer !== selected){
+			// 	game.unanswered ++
+			// }else if (check.answer === answer){
+			// 	game.correct ++
+			// }else if(check.answer !== answer){
+			// 	game.incorrect ++
+
+			}
+			game.unanswered = game.questionCounter-(game.correct + game.incorrect);
 			
 	});
 
 
 	// calculate unanswered and put as html of .unanswered
-	$(".correct").text("# of correct answers: " + game.correct);
+	$("#correct").text("# of correct answers: " + game.correct);
 
-	$(".incorrect").html(" # of incorrect answers: " + game.incorrect);
+	$("#incorrect").html(" # of incorrect answers: " + game.incorrect);
+
+	$("#unanswered").text("# of unanswered answers: " + game.unanswered);
 			
 
 };
